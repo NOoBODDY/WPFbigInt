@@ -73,31 +73,48 @@ public class SyntaxParserBigInt
 
     BigInteger factor()
     {
+        if (_index >= _tokens.Length)
+            throw new Exception("Unexpected end of expression");
         var nextToken = _tokens[_index];
+        BigInteger result;
         if (nextToken == "(")
         {
             _index++;
-            BigInteger result = expression();
-            string rightBracket = _tokens[_index];
-            if (_index > _tokens.Length)
-                throw new Exception("Unexpected end of expression");
-            if (rightBracket == ")")
+            result = expression();
+            string rightBracket;
+            if (_index < _tokens.Length)
             {
-                _index++;
-                return result;
+                rightBracket = _tokens[_index];
+                if (rightBracket == ")")
+                {
+                    _index++;
+                    return result;
+                }
+                else
+                {
+                    throw new Exception($@"expected ')' but {rightBracket}");
+                }
             }
-
-            throw new Exception($@"expected ')' but {rightBracket}");
+            else
+            {
+                throw new Exception("Unexpected end of expression");
+            }
+            
         }
         else
         {
             if (nextToken == "-")
             {
-                _index+=2;
-                return -BigInteger.Parse(_tokens[_index-1]);
+                _index++;
+                return -factor();
             }
         }
+
+        if (! BigInteger.TryParse(nextToken, out result))
+        {
+            throw new Exception($@"expected numeric but {nextToken}");
+        }
         _index++;
-        return BigInteger.Parse(nextToken);
+        return result;
     }
 }
