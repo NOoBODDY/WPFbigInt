@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using ArithmeticParser;
+using ArithmeticParser.Operations;
 
 namespace ArithmeticParserTest;
 
@@ -14,6 +15,7 @@ public class ArithmeticBigIntCalcTest
         BigInteger result = parser.Calc();
         
         Assert.Equal(new BigInteger(654), result);
+        
     }
     [Fact]
     public void SimpleExpressionWithBrackets()
@@ -46,6 +48,9 @@ public class ArithmeticBigIntCalcTest
         BigInteger result = parser.Calc();
         
         Assert.Equal(new BigInteger(2036), result);
+        Assert.Equal(2, parser.OperaionsCounter[Operations.Addition]);
+        Assert.Equal(2, parser.OperaionsCounter[Operations.Subtraction]);
+        Assert.Equal(2, parser.OperaionsCounter[Operations.Multiplication]);
     }
     [Fact]
     public void BigIntTestTest()
