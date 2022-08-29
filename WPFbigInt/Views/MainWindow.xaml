@@ -3,12 +3,93 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:s="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:WPFbigInt.Views"
         xmlns:vm="clr-namespace:WPFbigInt.ViewModels"
         d:DataContext="{d:DesignInstance {x:Type vm:MainViewModel}}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Border Grid.Column="0" 
 
+                Grid.RowSpan="2"
+                BorderThickness="2"
+                BorderBrush="Black"
+                Name = "Menu"
+        >
+            <StackPanel Orientation="Vertical"
+                        VerticalAlignment="Center">
+                <Button Width="150" 
+                        Height="30" 
+                        IsEnabled="{Binding FileButtonsActive}"
+                        Content="Выбрать файл ввода" 
+                        Margin="3" 
+                        Command="{Binding ChooseInputFile}"/>
+                <Button Width="150" 
+                        Height="30"
+                        IsEnabled="{Binding FileButtonsActive}"
+                        Content="Выбрать файл вывода" 
+                        Margin="3"
+                        Command="{Binding ChooseOutputFile}"/>
+                <Button Width="150" 
+                        Height="30" 
+                        Content="{Binding StartButtonName}" 
+                        Margin="3"
+                        Command="{Binding StartStopCalculation}"/>
+            </StackPanel>
+        </Border>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <Border BorderThickness="1" BorderBrush="Black">
+                <StackPanel Orientation="Vertical" Margin="3" >
+                    <ProgressBar 
+                                 Minimum="0" Maximum="100"
+                                 Height="30"
+                                 Value="{Binding ProgressBarValue}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Прошло :</Label>
+                        <Label Content="{Binding CurrentTime,
+                         StringFormat=hh\\:mm\\:ss}"/>
+                        <Label>Осталось: </Label>
+                        <Label Content="{Binding RemainigTime,
+                         StringFormat=hh\\:mm\\:ss}"/>
+                        <Label>Выражений выполнено:</Label>
+                        <Label Content="{Binding ExpressionsDone}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            
+            <ListView Grid.Row="1" 
+                      Margin="3"
+                      ItemsSource="{Binding StatisticTable}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Имя операции" 
+                                        DisplayMemberBinding="{Binding OperationName}"/>
+                        <GridViewColumn Header="Вычислений" 
+                                        DisplayMemberBinding="{Binding OperationAmount}"/>
+                        <GridViewColumn Header="Общее время" 
+                                        DisplayMemberBinding="{Binding CalcDuration}"/>
+                        <GridViewColumn Header="Среднее время" 
+                                        DisplayMemberBinding="{Binding MiddleCalcDuration}"/>
+                        <GridViewColumn Header="Процент от общего времени" 
+                                        DisplayMemberBinding="{Binding PercentByAllTime}"/>
+                        
+                    </GridView>
+                </ListView.View>
+                
+            </ListView>
+            
+        </Grid>
+        
     </Grid>
 </Window>

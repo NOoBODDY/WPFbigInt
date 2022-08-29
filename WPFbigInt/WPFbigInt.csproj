@@ -8,11 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Models" />
+      <ProjectReference Include="..\ArithmeticParser\ArithmeticParser.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ArithmeticParser\ArithmeticParser.csproj" />
+      <ApplicationDefinition Remove="App.xaml" />
+      <Page Include="App.xaml" />
     </ItemGroup>
 
 </Project>
